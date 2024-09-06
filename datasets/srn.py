@@ -4,6 +4,7 @@ import yaml
 
 import numpy as np
 import torch
+from omegaconf import OmegaConf
 from torch.utils.data import Dataset
 
 from .dataset_readers import readCamerasFromTxt
@@ -20,9 +21,10 @@ class SRNDataset(SharedDataset):
                  dataset_name="train"):
         super().__init__()
         self.cfg = cfg
-        with open('/Content/configs/dataset/cars.yaml', 'r') as f1:
-            yaml1 = yaml.safe_load(f1)
-            self.cfg = {**yaml1, **cfg}
+        with open('/Content/splatter-image/configs/dataset/cars.yaml', 'r') as f1:
+            carsConf = yaml.safe_load(f1)
+            carsConf = OmegaConf.create(carsConf)
+            self.cfg = OmegaConf.merge(self.cfg, carsConf)
 
 
         self.dataset_name = dataset_name
