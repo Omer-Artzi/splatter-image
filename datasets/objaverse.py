@@ -15,8 +15,8 @@ from utils.camera_utils import get_loop_cameras
 
 OBJAVERSE_ROOT = None # Change this to your data directory
 OBJAVERSE_LVIS_ANNOTATION_PATH = None # Change this to your filtering .json path
-assert OBJAVERSE_ROOT is not None, "Update dataset path"
-assert OBJAVERSE_LVIS_ANNOTATION_PATH is not None, "Update filtering .json path"
+# assert OBJAVERSE_ROOT is not None, "Update dataset path"
+# assert OBJAVERSE_LVIS_ANNOTATION_PATH is not None, "Update filtering .json path"
 
 class ObjaverseDataset(SharedDataset):
     def __init__(self,
