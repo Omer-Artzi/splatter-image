@@ -1,5 +1,6 @@
 import glob
 import os
+import yaml
 
 import numpy as np
 import torch
@@ -11,7 +12,7 @@ from utils.graphics_utils import getWorld2View2, getProjectionMatrix, getView2Wo
 
 from .shared_dataset import SharedDataset
 
-SHAPENET_DATASET_ROOT = None # Change this to your data directory
+SHAPENET_DATASET_ROOT = "/Content" # Change this to your data directory
 assert SHAPENET_DATASET_ROOT is not None, "Update the location of the SRN Shapenet Dataset"
 
 class SRNDataset(SharedDataset):
@@ -19,6 +20,10 @@ class SRNDataset(SharedDataset):
                  dataset_name="train"):
         super().__init__()
         self.cfg = cfg
+        with open('/Content/configs/dataset/cars.yaml', 'r') as f1:
+            yaml1 = yaml.safe_load(f1)
+            self.cfg = {**yaml1, **cfg}
+
 
         self.dataset_name = dataset_name
         if dataset_name == "vis":
