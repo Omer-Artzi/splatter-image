@@ -1,41 +1,52 @@
-@echo off
-setlocal enabledelayedexpansion
+#!/bin/bash
 
-:: Check if the correct number of arguments is provided
-if "%~1"=="" (
-    echo Usage: %0 directory_path percentage
-    exit /b 1
-)
-if "%~2"=="" (
-    echo Usage: %0 directory_path percentage
-    exit /b 1
-)
+# Function to display usage information
+usage() {
+    echo "Usage: $0 directory_path percentage"
+    exit 1
+}
 
-:: Get the directory path and percentage from arguments
-set "dirPath=%~1"
-set "percent=%~2"
+# Check if the correct number of arguments is provided
+if [ "$#" -ne 2 ]; then
+    usage
+fi
 
-:: Check if the directory exists
-if not exist "%dirPath%" (
-    echo Directory not found.
-    exit /b 1
-)
+# Get the directory path and percentage from arguments
+dirPath="$1"
+percent="$2"
 
-:: Validate the percentage
-if "%percent%" lss 0 (
-    echo Invalid percentage. Must be between 0 and 100.
-    exit /b 1
-)
-if "%percent%" gtr 100 (
-    echo Invalid percentage. Must be between 0 and 100.
-    exit /b 1
-)
+# Check if the directory exists
+if [ ! -d "$dirPath" ]; then
+    echo "Directory not found."
+    exit 1
+fi
 
-:: Create a PowerShell command to perform the file deletion
-set "psCommand=Get-ChildItem -Path '%dirPath%' | Where-Object { !($_.PSIsContainer) } | Get-Random -Count ( [math]::Round((%percent% / 100) * (Get-ChildItem -Path '%dirPath%' | Where-Object { !($_.PSIsContainer) } | Measure-Object).Count) ) | Remove-Item"
+# Validate the percentage
+if [ "$percent" -lt 0 ] || [ "$percent" -gt 100 ]; then
+    echo "Invalid percentage. Must be between 0 and 100."
+    exit 1
+fi
 
-:: Run the PowerShell command
-powershell -command "%psCommand%"
+# Get a list of files in the directory (excluding directories)
+files=($(find "$dirPath" -maxdepth 1 -type f))
 
-echo Random deletion of files complete.
-endlocal
+# Calculate the number of files to delete
+numFiles=${#files[@]}
+numToDelete=$(echo "($percent / 100) * $numFiles" | bc | awk '{print int($1 + 0.5)}')
+
+# Check if there are files to delete
+if [ "$numFiles" -eq 0 ]; then
+    echo "No files found in the directory."
+    exit 1
+fi
+
+# Randomly select files to delete
+filesToDelete=($(shuf -e "${files[@]}" -n "$numToDelete"))
+
+# Delete the selected files
+for file in "${filesToDelete[@]}"; do
+    rm -f "$file"
+    echo "Deleted: $file"
+done
+
+echo "Random deletion of files complete."
