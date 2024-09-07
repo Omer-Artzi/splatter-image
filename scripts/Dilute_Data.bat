@@ -45,7 +45,7 @@ filesToDelete=($(shuf -e "${files[@]}" -n "$numToDelete"))
 
 # Delete the selected files
 for file in "${filesToDelete[@]}"; do
-    rm -f "$file"
+    rm -rf "$file"
     echo "Deleted: $file"
 done
 
