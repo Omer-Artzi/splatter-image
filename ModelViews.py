@@ -2,7 +2,7 @@ import os
 import sys
 from tkinter import Image
 
-import gr as gr
+import gradio as gr
 import rembg
 import torch
 import imageio
