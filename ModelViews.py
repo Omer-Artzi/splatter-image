@@ -5,7 +5,7 @@ from tkinter import Image
 import gradio as gr
 import rembg
 import torch
-import imageio
+from PIL import Image
 import numpy as np
 from huggingface_hub import hf_hub_download
 from matplotlib import pyplot as plt
