@@ -1,11 +1,12 @@
 import os
 import sys
 from tkinter import Image
-
+from torchvision import transforms
 import gradio as gr
 import rembg
 import torch
 from PIL import Image
+import imageio
 import numpy as np
 from huggingface_hub import hf_hub_download
 from matplotlib import pyplot as plt
@@ -199,6 +200,7 @@ def preprocess(input_image, rembg_session, preprocess_background=True, foregroun
 def get_reconstruction(image,model, device, output_dir="./output"):
     os.makedirs(output_dir, exist_ok=True)
 
+    image = transforms.ToTensor()(image).unsqueeze(0).to(device)
     image = to_tensor(image).to(device)
     view_to_world_source, rot_transform_quats = get_source_camera_v2w_rmo_and_quats()
     view_to_world_source = view_to_world_source.to(device)
