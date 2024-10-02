@@ -1,6 +1,6 @@
 import os
 import sys
-from tkinter import Image
+from PIL import Image
 from torchvision import transforms
 import gradio as gr
 import rembg
@@ -199,7 +199,7 @@ def preprocess(input_image, rembg_session, preprocess_background=True, foregroun
 
 def get_reconstruction(image,model, device, output_dir="./output"):
     os.makedirs(output_dir, exist_ok=True)
-
+    image = np.array(image)
     image = transforms.ToTensor()(image).unsqueeze(0).to(device)
     image = to_tensor(image).to(device)
     view_to_world_source, rot_transform_quats = get_source_camera_v2w_rmo_and_quats()
