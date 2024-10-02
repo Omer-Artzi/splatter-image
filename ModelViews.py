@@ -248,7 +248,7 @@ def main() -> None:
 
     args = sys.argv
     image = Image.open(args[1])
-
+    image = np.array(preprocess(image, rembg_session, preprocess_background=True, foreground_ratio=0.65))
     reconstruction = get_reconstruction(image, model, device, output_dir)
     xyz = reconstruction["xyz"]
     scale = reconstruction["scaling"]
