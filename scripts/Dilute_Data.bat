@@ -7,7 +7,6 @@ delete_matching_files() {
     percent="$2"
 
     # Check if both pose and rgb folders exist
-    echo "Checking folders $pose_folder and $rgb_folder..."
     if [[ ! -d "$pose_folder" || ! -d "$rgb_folder" ]]; then
         echo "Either 'pose' or 'rgb' folder is missing in $1. Skipping..."
         return
@@ -27,7 +26,7 @@ delete_matching_files() {
 
         for pose_file in "${files_to_delete[@]}"; do
             rgb_file="${pose_file%.txt}.png"
-            echo "Deleting $rgb_file and $pose_file..."
+            echo "Deleting $rgb_folder/$rgb_file and $pose_folder/$pose_file..."
             rm -f "$pose_folder/$pose_file"
             rm -f "$rgb_folder/$rgb_file"
         done
