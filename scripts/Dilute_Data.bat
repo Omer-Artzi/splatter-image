@@ -7,6 +7,7 @@ delete_matching_files() {
     percent="$2"
 
     # Check if both pose and rgb folders exist
+    echo "Checking folders $pose_folder and $rgb_folder..."
     if [[ ! -d "$pose_folder" || ! -d "$rgb_folder" ]]; then
         echo "Either 'pose' or 'rgb' folder is missing in $1. Skipping..."
         return
