@@ -18,6 +18,7 @@ delete_matching_files() {
     # Calculate the number of files to delete based on percentage
     total_files=${#pose_files[@]}
     num_to_delete=$((total_files * percent / 100))
+    echo "Total files: $total_files, Files to delete: $num_to_delete"
 
     # Shuffle the file list and delete the first num_to_delete files from both folders
     if (( num_to_delete > 0 )); then
