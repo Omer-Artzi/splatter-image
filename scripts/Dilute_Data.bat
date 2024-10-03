@@ -27,7 +27,7 @@ delete_matching_files() {
 
         for pose_file in "${files_to_delete[@]}"; do
             rgb_file="${pose_file%.txt}.png"
-            echo "Deleting $rgb_file and $pose_file...
+            echo "Deleting $rgb_file and $pose_file..."
             rm -f "$pose_folder/pose_file"
             rm -f "$rgb_folder/$rgb_file"
         done
@@ -58,3 +58,4 @@ for subfolder in "$directory"/*/; do
 done
 
 echo "Deletion process complete."
+
