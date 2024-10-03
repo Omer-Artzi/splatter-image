@@ -264,8 +264,8 @@ def main() -> None:
     create_3d_rotation_video_with_scale(xyz, scale, output_dir)
 
     # Create a 3D rotation video with quaternion
-    quaternions = reconstruction["quaternions"]
-    create_3d_rotation_video_with_quaternion(xyz, quaternions, output_dir)
+    #quaternions = reconstruction["quaternions"]
+    #create_3d_rotation_video_with_quaternion(xyz, quaternions, output_dir)
 
 
 if __name__ == "__main__":

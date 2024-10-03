@@ -24,6 +24,7 @@ delete_matching_files() {
         files_to_delete=($(shuf -e "${pose_files[@]}" | head -n "$num_to_delete"))
 
         for file in "${files_to_delete[@]}"; do
+            echo "Deleting $file"
             rm -f "$pose_folder/$file"
             rm -f "$rgb_folder/$file"
         done
