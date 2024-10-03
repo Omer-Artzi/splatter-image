@@ -23,10 +23,11 @@ delete_matching_files() {
     if (( num_to_delete > 0 )); then
         files_to_delete=($(shuf -e "${pose_files[@]}" | head -n "$num_to_delete"))
 
-        for file in "${files_to_delete[@]}"; do
-            echo "Deleting $file"
-            rm -f "$pose_folder/$file"
-            rm -f "$rgb_folder/$file"
+        for pose_file in "${files_to_delete[@]}"; do
+            rgb_file="${pose_file%.txt}.png"
+            echo "Deleting $rgb_file and $pose_file...
+            rm -f "$pose_folder/pose_file"
+            rm -f "$rgb_folder/$rgb_file"
         done
     fi
 }
