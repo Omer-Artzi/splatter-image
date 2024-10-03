@@ -36,7 +36,7 @@ delete_matching_files() {
 
 # Check if correct number of arguments are given
 if [[ $# -ne 2 ]]; then
-    echo "Usage: $0 <directory> <percentage>"
+    echo "Usage: $0 directory percentage"
     exit 1
 fi
 
