@@ -13,7 +13,7 @@ from utils.graphics_utils import getWorld2View2, getProjectionMatrix, getView2Wo
 
 from .shared_dataset import SharedDataset
 
-SHAPENET_DATASET_ROOT = "/Content/" # Change this to your data directory
+SHAPENET_DATASET_ROOT = "/content/" # Change this to your data directory
 assert SHAPENET_DATASET_ROOT is not None, "Update the location of the SRN Shapenet Dataset"
 
 class SRNDataset(SharedDataset):
@@ -21,7 +21,7 @@ class SRNDataset(SharedDataset):
                  dataset_name="train"):
         super().__init__()
         self.cfg = cfg
-        with open('/Content/splatter-image/configs/dataset/cars.yaml', 'r') as f1:
+        with open('/content/splatter-image/configs/dataset/cars.yaml', 'r') as f1:
             carsConf = yaml.safe_load(f1)
             carsConf = OmegaConf.create(carsConf)
             self.cfg = OmegaConf.merge(self.cfg, carsConf)

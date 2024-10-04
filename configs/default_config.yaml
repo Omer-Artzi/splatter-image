@@ -14,6 +14,11 @@ data:
   subset: -1
   input_images: 1
   origin_distances: false
+  znear: 0.8
+  zfar: 1.8
+  fov: 51.98948897809546
+  category: cars
+  white_background: true
 opt:
   iterations: 800001
   base_lr: 0.00005
@@ -36,12 +41,6 @@ model:
   inverted_x: false
   inverted_y: true
   name: SingleUNet
-  opacity_scale: 1.0
-  opacity_bias: -2.0
-  scale_bias: 0.02
-  scale_scale: 0.003
-  xyz_scale: 0.1
-  xyz_bias: 0.0
   depth_scale: 1.0
   depth_bias: 0.0
   network_without_offset: false
@@ -52,6 +51,12 @@ model:
   cross_view_attention: true
   base_dim: 128
   isotropic: false
+  opacity_scale: 0.001
+  opacity_bias: -3.0
+  scale_scale: 0.001
+  scale_bias: 0.02
+  xyz_scale: 0.000001
+  xyz_bias: 0.0
 
 logging:
   ckpt_iterations: 1000
