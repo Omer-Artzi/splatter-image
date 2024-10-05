@@ -101,8 +101,7 @@ def main(cfg: DictConfig):
     background = fabric.to_device(background)
 
     dataset = get_dataset(cfg, "train")
-    dataloader = DataLoader(dataset, batch_size=cfg.opt.batch_size, shuffle=True,
-                            num_workers=12 if cfg.data.category in ["nmr", "objaverse"] else 0)
+    dataloader = DataLoader(dataset, batch_size=cfg.opt.batch_size // 2, shuffle=True)
 
     val_dataset = get_dataset(cfg, "val")
     val_dataloader = DataLoader(val_dataset, batch_size=1, shuffle=False, num_workers=1)
@@ -118,6 +117,10 @@ def main(cfg: DictConfig):
     # Directory to save the plots
     save_dir = os.path.join(vis_dir, "plots")
     os.makedirs(save_dir, exist_ok=True)
+    # Initialize lists to store the losses
+    front_losses = []
+    back_losses = []
+    combined_losses = []
 
     for num_epoch in range((cfg.opt.iterations + 1 - first_iter) // len(dataloader) + 1):
         dataloader.sampler.set_epoch(num_epoch)
@@ -137,23 +140,46 @@ def main(cfg: DictConfig):
             visualize_and_save_layer(pred_front, "Front Layer", iteration, save_dir)
             visualize_and_save_layer(pred_back, "Back Layer", iteration, save_dir)
 
-            # Compute loss using combined loss functions
-            total_loss = loss_fn(pred_front, data["gt_images"], pred_back, data["gt_images"])
+            # Compute front and back losses
+            front_loss = loss_fn(pred_front, data["gt_images"])
+            back_loss = loss_fn(pred_back, data["gt_images"])
 
-            total_loss.backward()
+            # Combined loss (front + back)
+            combined_loss = front_loss + back_loss
+
+            # Backpropagate and update
+            combined_loss.backward()
             optimizer.step()
             optimizer.zero_grad()
+            torch.cuda.empty_cache()
+
+            # Store the losses for plotting
+            front_losses.append(front_loss.item())
+            back_losses.append(back_loss.item())
+            combined_losses.append(combined_loss.item())
 
             if cfg.opt.ema.use and fabric.is_global_zero:
                 ema.update()
 
             gaussian_predictor.eval()
 
-            # Log training loss
+            # Log training losses
             if iteration % cfg.logging.loss_log == 0 and fabric.is_global_zero:
-                wandb.log({"training_loss": total_loss.item()}, step=iteration)
+                wandb.log({"front_loss": front_loss.item(), "back_loss": back_loss.item(), "combined_loss": combined_loss.item()}, step=iteration)
+
 
     wandb_run.finish()
+    # After training, plot the losses
+    plt.figure()
+    plt.plot(front_losses, label="Front Loss")
+    plt.plot(back_losses, label="Back Loss")
+    plt.plot(combined_losses, label="Combined Loss")
+    plt.xlabel("Iterations")
+    plt.ylabel("Loss")
+    plt.title("Losses Over Time")
+    plt.legend()
+    plt.savefig(os.path.join(save_dir, "loss_curves.png"))
+    plt.show()
 
 
 if __name__ == "__main__":

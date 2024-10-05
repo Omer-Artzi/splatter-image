@@ -20,7 +20,7 @@ data:
   category: cars
   white_background: true
 opt:
-  iterations: 800001
+  iterations: 800
   base_lr: 0.00005
   batch_size: 8
   betas:
