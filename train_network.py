@@ -20,7 +20,7 @@ from ema_pytorch import EMA
 from omegaconf import DictConfig, OmegaConf
 
 from utils.general_utils import safe_state
-from utils.loss_utils import combined_l1_loss, combined_l2_loss
+from utils.loss_utils import l1_loss, l2_loss
 import lpips as lpips_lib
 
 from eval import evaluate_dataset
@@ -31,7 +31,7 @@ import matplotlib.pyplot as plt
 
 # Function to visualize and save layers
 def visualize_and_save_layer(layer_image, layer_name, step, save_dir):
-    layer_image = layer_image.clamp(0, 1).detach().cpu().numpy().transpose(1, 2, 0)
+    layer_image = layer_image.detach().cpu().numpy().transpose(1, 2, 0)
 
     # Plot the image
     plt.imshow(layer_image)
@@ -87,9 +87,9 @@ def main(cfg: DictConfig):
         ema = fabric.to_device(ema)
 
     if cfg.opt.loss == "l2":
-        loss_fn = combined_l2_loss
+        loss_fn = l2_loss
     elif cfg.opt.loss == "l1":
-        loss_fn = combined_l1_loss
+        loss_fn = l1_loss
 
     if cfg.opt.lambda_lpips != 0:
         lpips_fn = fabric.to_device(lpips_lib.LPIPS(net='vgg'))
@@ -137,8 +137,8 @@ def main(cfg: DictConfig):
             pred_back = gaussian_predictor(input_images, data["view_to_world_transforms"][:, :cfg.data.input_images, ...], rot_transform_quats, focals_pixels_pred)
 
             # Visualize and save both layers
-            visualize_and_save_layer(pred_front, "Front Layer", iteration, save_dir)
-            visualize_and_save_layer(pred_back, "Back Layer", iteration, save_dir)
+            #visualize_and_save_layer(pred_front, "Front Layer", iteration, save_dir)
+            #visualize_and_save_layer(pred_back, "Back Layer", iteration, save_dir)
 
             # Compute front and back losses
             front_loss = loss_fn(pred_front, data["gt_images"])
