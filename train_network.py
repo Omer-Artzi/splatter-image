@@ -224,7 +224,7 @@ def main(cfg: DictConfig):
                                                  rot_transform_quats,
                                                  focals_pixels_pred)
             print(f"data attributes: {data.keys()}")
-            front_layer, back_layer = splat_front_and_back(gaussian_splats, data['camera_position'])
+            front_layer, back_layer = splat_front_and_back(gaussian_splats, data['camera_centers'])
 
             # Forward pass for front and back layers
             front_output = gaussian_predictor(front_layer)
