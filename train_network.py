@@ -27,22 +27,24 @@ import matplotlib.pyplot as plt
 def splat_front_and_back(gaussians, camera_position):
     front_layer = []
     back_layer = []
-    for gaussian in gaussians:
-        if is_visible(gaussian, camera_position):
-            front_layer.append(gaussian)
+    for i in range(len(gaussians['xyz'])):
+        if is_visible(gaussians, camera_position, i):
+            front_layer.append(gaussians)
         else:
-            back_layer.append(gaussian)
+            back_layer.append(gaussians)
     return front_layer, back_layer
 
     # Helper function to decide visibility (modify based on your data's structure)
 
 
-def is_visible(gaussian, camera_position):
+def is_visible(gaussian, camera_position, i):
     # Assuming each Gaussian has 'normal' and 'position' attributes
     # Modify these attribute names based on your actual data structure
-    normal = gaussian['rotation']  # Replace with actual key
-    position = gaussian['xyz']  # Replace with actual key
-    direction = camera_position - position
+    print(f'gaussian: {gaussian}')
+    normal = gaussian['rotation'][i]  # Replace with actual key
+    position = gaussian['xyz'][i]  # Replace with actual key
+    print(f'normal: {normal}, position: {position}')
+    direction = camera_position - position[i]
     return torch.dot(normal, direction) > 0  # Visible if the dot product is positive
 
 # Function to plot losses
