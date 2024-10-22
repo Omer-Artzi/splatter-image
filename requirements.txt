@@ -1,5 +1,6 @@
 ema-pytorch
 tqdm
+rembg
 hydra-core
 omegaconf
 lpips
@@ -14,3 +15,8 @@ markupsafe==2.0.1
 gradio
 huggingface_hub
 pyyaml
+utils
+pytorch3d -f https://dl.fbaipublicfiles.com/pytorch3d/packaging/wheels/py3/cu121/torch2.4/index.html
+torch
+torchvision
+ipykernel
