@@ -303,7 +303,7 @@ def main(cfg: DictConfig):
     for num_epoch in range((cfg.opt.iterations + 1 - first_iter) // len(dataloader) + 1):
         dataloader.sampler.set_epoch(num_epoch)
         print("EPOCH NUM %d" % num_epoch)
-        num_batches = len(dataloader) // 20
+        num_batches = len(dataloader) // 10
         print(num_batches)
 
         for batch_idx, data in enumerate(dataloader):
@@ -595,45 +595,50 @@ def main(cfg: DictConfig):
             fnames_to_save = []
             # Find out which models to save
             if (iteration + 1) % cfg.logging.ckpt_iterations == 0 and fabric.is_global_zero:
+                # Always save the latest model
                 fnames_to_save.append("model_latest.pth")
-            if (iteration + 1) % cfg.logging.val_log == 0 and fabric.is_global_zero:
-                torch.cuda.empty_cache()
-                print("\n[ITER {}] Validating".format(iteration + 1))
+
+            # Remove validation and best model saving
+            # The code below can be commented out or removed if not needed
+            # if (iteration + 1) % cfg.logging.val_log == 0 and fabric.is_global_zero:
+            #     torch.cuda.empty_cache()
+            #     print("\n[ITER {}] Validating".format(iteration + 1))
+            #     if cfg.opt.ema.use:
+            #         scores = evaluate_dataset(
+            #             ema,
+            #             val_dataloader,
+            #             device=device,
+            #             model_cfg=cfg)
+            #     else:
+            #         scores = evaluate_dataset(
+            #             gaussian_predictor,
+            #             val_dataloader,
+            #             device=device,
+            #             model_cfg=cfg)
+            #     wandb.log(scores, step=iteration + 1)
+
+            #     # Save models - skip the best model, always overwrite the latest model
+            #     # if scores["PSNR_novel"] > best_PSNR:
+            #     #     fnames_to_save.append("model_best.pth")
+            #     #     best_PSNR = scores["PSNR_novel"]
+            #     #     print("\n[ITER {}] Saving new best checkpoint PSNR:{:.2f}".format(
+            #     #         iteration + 1, best_PSNR))
+
+            # Model saving process
+            print("MODEL SAVING IN PROGRESS")
+            for fname_to_save in fnames_to_save:
+                ckpt_save_dict = {
+                    "iteration": iteration,
+                    "optimizer_state_dict": optimizer.state_dict(),
+                    "loss": total_loss.item(),
+                    "best_PSNR": best_PSNR
+                }
                 if cfg.opt.ema.use:
-                    scores = evaluate_dataset(
-                        ema,
-                        val_dataloader,
-                        device=device,
-                        model_cfg=cfg)
+                    ckpt_save_dict["model_state_dict"] = ema.ema_model.state_dict()
                 else:
-                    scores = evaluate_dataset(
-                        gaussian_predictor,
-                        val_dataloader,
-                        device=device,
-                        model_cfg=cfg)
-                wandb.log(scores, step=iteration + 1)
-                # save models - if the newest psnr is better than the best one,
-                # overwrite best_model. Always overwrite the latest model.
-                # Inside the main loop where the best model is found:
-                if scores["PSNR_novel"] > best_PSNR:
-                    fnames_to_save.append("model_best.pth")
-                    best_PSNR = scores["PSNR_novel"]
-                    print("\n[ITER {}] Saving new best checkpoint PSNR:{:.2f}".format(
-                        iteration + 1, best_PSNR))
+                    ckpt_save_dict["model_state_dict"] = gaussian_predictor.state_dict()
+                torch.save(ckpt_save_dict, os.path.join(vis_dir, fname_to_save))
 
-                    # Generate the point cloud or mesh using your model
-                    # Example input data, replace this with your actual input data
-                    example_input_data = torch.randn(1, 3, 224, 224).to(device)  # Adjust shape accordingly
-                    gaussian_predictor.eval()
-                    with torch.no_grad():
-                        # Get the output point cloud or mesh from the model
-                        output = gaussian_predictor(example_input_data)
-
-                    # Assuming the output is a point cloud of shape [N, 3]
-                    point_cloud = output  # Adjust according to your model's output
-
-                    # Save the point cloud as a .ply file
-                    # export_point_cloud_as_ply(point_cloud, os.path.join(vis_dir, 'best_model_output.ply'))
 
                 torch.cuda.empty_cache()
 

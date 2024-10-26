@@ -19,7 +19,7 @@ general:
   num_devices: 1
   mixed_precision: false
 data:
-  training_resolution: 128
+  training_resolution: 256
   subset: -1
   input_images: 1
   origin_distances: false
@@ -29,7 +29,7 @@ data:
   category: cars
   white_background: true
 opt:
-  iterations: 2
+  iterations: 8
   base_lr: 0.00005
   batch_size: 8
   betas:

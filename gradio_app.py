@@ -56,7 +56,7 @@ def main():
                     "gradio_config.yaml"
                     ))
     # Define the path to your local model
-    local_model_path = "/content/splatter-image/experiments_out/2024-10-21/07-24-09/model_latest.pth"
+    local_model_path = "/content/splatter-image/experiments_out/2024-10-25/15-09-03/model_latest.pth"
 
     # Try loading the local model if it exists, otherwise fall back to Hugging Face Hub
     if os.path.exists(local_model_path):
@@ -144,7 +144,7 @@ def main():
         export_to_obj(reconstruction_unactivated, ply_out_path)
 
         # Return the paths to all videos
-        return  loop_out_path
+        return ply_out_path, loop_out_path
 
 
     css = """
@@ -204,7 +204,8 @@ def main():
                             './demo_examples/07_objaverse_backpack.png',
                             './demo_examples/08_unsplash_chocolatecake.png',
                             './demo_examples/09_realfusion_cherry.png',
-                            './demo_examples/10_triposr_teapot.png'
+                            './demo_examples/10_triposr_teapot.png',
+                            './demo_examples/car.png'
                         ],
                         inputs=[input_image],
                         cache_examples=False,
