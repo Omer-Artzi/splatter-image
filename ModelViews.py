@@ -231,7 +231,8 @@ def get_reconstruction(image,model, device, output_dir="./output"):
     view_to_world_source, rot_transform_quats = get_source_camera_v2w_rmo_and_quats()
     view_to_world_source = view_to_world_source.to(device)
     rot_transform_quats = rot_transform_quats.to(device)
-
+    
+    image = image[..., :-1]
     reconstruction_unactivated = model(
         image.unsqueeze(0).unsqueeze(0),
         view_to_world_source,
