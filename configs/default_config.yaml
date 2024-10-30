@@ -1,4 +1,3 @@
-
 defaults:
   - wandb: defaults
   - hydra: defaults
@@ -22,7 +21,7 @@ data:
 opt:
   iterations: 8
   base_lr: 0.00005
-  batch_size: 4
+  batch_size: 8
   betas:
     - 0.9
     - 0.999
