@@ -265,8 +265,6 @@ The network predicts parameters:
 $$
 \begin{Bmatrix} \mu_{front}, \Sigma_{front}, c_{front}, \alpha_{front} \end{Bmatrix}, \quad \begin{Bmatrix} \mu_{back}, \Sigma_{back}, c_{back}, \alpha_{back} \end{Bmatrix}
 $$
-
----
 ### Mathematical Details
 
 #### Loss Functions
@@ -292,6 +290,8 @@ and similarly for $\mathcal{L}_{back}$.
 The total loss is a weighted sum:
 
 $$\mathcal{L}_{total} = \lambda_{recon} \mathcal{L}_{recon} + \lambda_{reg} \mathcal{L}_{reg}$$
+
+---
 
 ---
 
