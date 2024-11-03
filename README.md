@@ -275,13 +275,11 @@ $$
 We designed separate loss functions for each layer:
 
 1. **Reconstruction Loss**: 
-    $\mathcal{L}_{recon}$ $\mathcal{L}_{front}$
-
-$\mathcal{L}_{back}$
+$\mathcal{L}_{recon} = \mathcal{L}_{front} + \mathcal{L}_{back}$
 
 where:
 
-$$\mathcal{L}_{front} = \frac{1}{M} \sum_{k=1}^{M} \left\| C_{front}({x}_k) - I_{front}({x}_k) \right\|^2$$
+$\mathcal{L}_{front} = \frac{1}{M} \sum_{k=1}^{M} \left\| C_{front}({x}_k) - I_{front}({x}_k) \right\|^2$
 
 and similarly for $\mathcal{L}_{back}$.
 
