@@ -262,8 +262,9 @@ Let’s imagine we have a surface at a certain point in space with a normal vect
 
 The network predicts parameters:
 
-$$\{{\mu}_{front}, \Sigma_{front}, {c}_{front}, \alpha_{front}\}, \quad \{{\mu}_{back}, \Sigma_{back}, {c}_{back}, \alpha_{back}\}$$
-
+$$
+\begin{Bmatrix} \mu_{front}, \Sigma_{front}, c_{front}, \alpha_{front} \end{Bmatrix}, \quad \begin{Bmatrix} \mu_{back}, \Sigma_{back}, c_{back}, \alpha_{back} \end{Bmatrix}
+$$
 
 ---
 
