@@ -270,18 +270,14 @@ $$
 ---
 ### Mathematical Details
 
-[//]: # (#### Loss Functions)
+#### Loss Functions
 
-[//]: # ()
-[//]: # (We designed separate loss functions for each layer:)
+We designed separate loss functions for each layer:
 
-[//]: # ()
-[//]: # (1. **Reconstruction Loss**: )
+1. **Reconstruction Loss**: 
+    $\mathcal{L}_{recon}$ $\mathcal{L}_{front}$
 
-[//]: # (    $\mathcal{L}_{recon}$ $\mathcal{L}_{front}$)
-
-[//]: # ()
-[//]: # ($\mathcal{L}_{back}$)
+$\mathcal{L}_{back}$
 
 where:
 
