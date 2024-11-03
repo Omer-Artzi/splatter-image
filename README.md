@@ -269,56 +269,22 @@ $$
 ---
 
 ### Mathematical Details
-### Loss Functions
+
+#### Loss Functions
 
 We designed separate loss functions for each layer:
 
 1. **Reconstruction Loss**:
 
-   $$
-   \mathcal{L}_{recon} = \mathcal{L}_{front} + \mathcal{L}_{back}
-   $$
+  $$
+  \mathcal{L}_{recon} = \mathcal{L}_{front} + \mathcal{L}_{back}
+  $$
 
-   where:
+where:
 
-   $$
-   \mathcal{L}_{front} = \frac{1}{M} \sum_{k=1}^{M} \left\| C_{front}({x}_k) - I_{front}({x}_k) \right\|^2
-   $$
+$$\mathcal{L}_{front} = \frac{1}{M} \sum_{k=1}^{M} \left\| C_{front}({x}_k) - I_{front}({x}_k) \right\|^2$$
 
-   and similarly for 
-
-   $$
-   \mathcal{L}_{back}
-   $$
-
-2. **Regularization Loss**: Applied to prevent overfitting and ensure smoothness.
-
-#### Total Loss
-
-The total loss is a weighted sum:
-
-$$
-\mathcal{L}_{total} = \lambda_{recon} \mathcal{L}_{recon} + \lambda_{reg} \mathcal{L}_{reg}
-$$
-
-[//]: # (#### Loss Functions)
-
-[//]: # ()
-[//]: # (We designed separate loss functions for each layer:)
-
-[//]: # ()
-[//]: # (1. **Reconstruction Loss**:)
-
-[//]: # (  $\mathcal{L}_{recon} = \mathcal{L}_{front} + \mathcal{L}_{back}$)
-
-[//]: # ()
-[//]: # (where:)
-
-[//]: # ()
-[//]: # ($$\mathcal{L}_{front} = \frac{1}{M} \sum_{k=1}^{M} \left\| C_{front}&#40;{x}_k&#41; - I_{front}&#40;{x}_k&#41; \right\|^2$$)
-
-[//]: # ()
-[//]: # (and similarly for $\mathcal{L}_{back}$.)
+and similarly for $\mathcal{L}_{back}$.
 
 
 2. **Regularization Loss**: To prevent overfitting and ensure smoothness.
