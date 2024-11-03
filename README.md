@@ -75,9 +75,9 @@ The projection of a 3D Gaussian $G_i$ onto the image plane results in a 2D Gauss
 
   where ${J}_i$ is the Jacobian of the projection function at ${\mu}_i$.
   
-- $$
-  \mathcal{L}_{recon} = \mathcal{L}_{front} + \mathcal{L}_{back}
-  $$
+  $\mathcal{L}_{recon}$ 
+
+$ = \mathcal{L}_{front} + \mathcal{L}_{back}$
 #### Rendering Equation
 
 The final pixel color $C({x})$ at position ${x}$ is computed using an accumulation of contributions from all projected Gaussians:
