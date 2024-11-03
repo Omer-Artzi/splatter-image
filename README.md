@@ -74,7 +74,9 @@ The projection of a 3D Gaussian $G_i$ onto the image plane results in a 2D Gauss
   $\Sigma'_i = {J}_i \Sigma_i {J}_i^\top$
 
   where ${J}_i$ is the Jacobian of the projection function at ${\mu}_i$.
-
+  $$
+  \mathcal{L}_{recon} = \mathcal{L}_{front} + \mathcal{L}_{back}
+  $$
 #### Rendering Equation
 
 The final pixel color $C({x})$ at position ${x}$ is computed using an accumulation of contributions from all projected Gaussians:
@@ -265,6 +267,8 @@ The network predicts parameters:
 $$
 \begin{Bmatrix} \mu_{front}, \Sigma_{front}, c_{front}, \alpha_{front} \end{Bmatrix}, \quad \begin{Bmatrix} \mu_{back}, \Sigma_{back}, c_{back}, \alpha_{back} \end{Bmatrix}
 $$
+
+---
 ### Mathematical Details
 
 #### Loss Functions
@@ -290,8 +294,6 @@ and similarly for $\mathcal{L}_{back}$.
 The total loss is a weighted sum:
 
 $$\mathcal{L}_{total} = \lambda_{recon} \mathcal{L}_{recon} + \lambda_{reg} \mathcal{L}_{reg}$$
-
----
 
 ---
 
